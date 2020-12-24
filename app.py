@@ -1,10 +1,11 @@
-from typing import Optional
 from fastapi import FastAPI
 
-from database.main import router as crud_router
+from routes import restaurant_routes, user_routes, review_routes
 
 app = FastAPI()
-app.include_router(crud_router)
+app.include_router(restaurant_routes.router)
+app.include_router(user_routes.router)
+app.include_router(review_routes.router)
 
 
 @app.get("/")
