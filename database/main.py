@@ -20,7 +20,7 @@ def get_db():
         db.close()
 
 
-# -----------------------------------------------------------------------------
+# ---------------------------- Users ---------------------------------
 @router.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_email(db, email=user.email)
@@ -43,7 +43,7 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 
 
-@router.get("/users/reviews", response_model=schemas.Restaurant)
+@router.get("/users/reviews", response_model=List[schemas.Review])
 def read_reviews_by_author(author_id: int, db: Session = Depends(get_db)):
     db_author_reviews = crud.get_reviews_by_author(db, author_id=author_id)
     if db_author_reviews is None:
@@ -51,18 +51,15 @@ def read_reviews_by_author(author_id: int, db: Session = Depends(get_db)):
     return db_author_reviews
 
 
-# -----------------------------------------------------------------------------
+# --------------------------- Restaurants -----------------------------------
 @router.post("/restaurants/", response_model=schemas.Restaurant)
 def create_restaurant(
     restaurant: schemas.RestaurantCreate, db: Session = Depends(get_db)
 ):
-    db_restaurant = crud.create_restaurant(db, restaurant=restaurant)
-    if db_restaurant is None:
-        raise HTTPException(status_code=404, detail="Restaurant not found")
-    return db_restaurant
+    return crud.create_restaurant(db, restaurant=restaurant)
 
 
-@router.get("/restaurants/", response_model=schemas.Restaurant)
+@router.get("/restaurants/", response_model=List[schemas.Restaurant])
 def read_restaurants(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.get_restaurants(skip=skip, limit=limit, db=db)
 
@@ -75,7 +72,7 @@ def read_restaurant(restaurant_id: int, db: Session = Depends(get_db)):
     return db_restaurant
 
 
-@router.get("/restaurants/reviews", response_model=schemas.Restaurant)
+@router.get("/restaurants/reviews", response_model=List[schemas.Review])
 def read_reviews_by_restaurant(restaurant_id: int, db: Session = Depends(get_db)):
     db_restaurant_reviews = crud.get_reviews_by_restaurant(
         db, restaurant_id=restaurant_id
@@ -85,18 +82,15 @@ def read_reviews_by_restaurant(restaurant_id: int, db: Session = Depends(get_db)
     return db_restaurant_reviews
 
 
-# -----------------------------------------------------------------------------
+# ---------------------------- Reviews -----------------------------------
 @router.post("/reviews/", response_model=schemas.Review)
 def create_restaurant(
     restaurant: schemas.RestaurantCreate, db: Session = Depends(get_db)
 ):
-    db_restaurant = crud.create_restaurant(db, restaurant=restaurant)
-    if db_restaurant is None:
-        raise HTTPException(status_code=404, detail="Restaurant not found")
-    return db_restaurant
+    return crud.create_restaurant(db, restaurant=restaurant)
 
 
-@router.get("/reviews/", response_model=schemas.Review)
+@router.get("/reviews/", response_model=List[schemas.Review])
 def read_reviews(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.get_reviews(skip=skip, limit=limit, db=db)
 

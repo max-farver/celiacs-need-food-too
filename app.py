@@ -1,5 +1,4 @@
 from typing import Optional
-from database.main import read_users
 from fastapi import FastAPI
 
 from database.main import router as crud_router

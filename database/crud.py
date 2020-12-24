@@ -47,7 +47,10 @@ def get_restaurants_by_name(db: Session, name: str) -> List[models.Restaurant]:
 def create_restaurant(
     db: Session, restaurant: schemas.RestaurantCreate
 ) -> models.Restaurant:
-    db_restaurant = models.Restaurant(name=restaurant.name, address=restaurant.address)
+    db_restaurant = models.Restaurant(
+        name=restaurant.name,
+        address=restaurant.address,
+    )
     db.add(db_restaurant)
     db.commit()
     db.refresh(db_restaurant)
@@ -66,13 +69,13 @@ def get_reviews(db: Session, skip: int = 0, limit: int = 100) -> List[models.Rev
 def get_reviews_by_restaurant(db: Session, restaurant_id: int) -> List[models.Review]:
     return (
         db.query(models.Review)
-        .filter(models.Review.restaurant.id == restaurant_id)
+        .filter(models.Review.restaurant_id == restaurant_id)
         .first()
     )
 
 
 def get_reviews_by_author(db: Session, author_id: int) -> List[models.Review]:
-    return db.query(models.Review).filter(models.Review.author.id == author_id).all()
+    return db.query(models.Review).filter(models.Review.author_id == author_id).all()
 
 
 def create_review(db: Session, review: schemas.ReviewCreate) -> models.Review:

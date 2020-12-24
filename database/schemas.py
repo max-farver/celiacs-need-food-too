@@ -34,6 +34,7 @@ class RestaurantCreate(RestaurantBase):
 
 class Restaurant(RestaurantBase):
     id: int
+    avg_rating: int
     avg_price: int
     reviews: List[int] = []
 
